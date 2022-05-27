@@ -6,6 +6,6 @@ Whether it's a file, stdin, or even later a network connection, you'll always ne
 ## How to install and run the project
 `https://github.com/Tako-21/Gnl.git`
 
-`make`
+`cd Gnl && make` without bonus
 
 Peace ✌️
