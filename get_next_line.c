@@ -6,7 +6,7 @@
 /*   By: mmeguedm <mmeguedm@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 13:53:15 by mmeguedm          #+#    #+#             */
-/*   Updated: 2022/05/29 19:01:04 by mmeguedm         ###   ########.fr       */
+/*   Updated: 2022/05/29 19:28:52 by mmeguedm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ char	*ft_strcut(const char *src)
 }
 char	*get_next_line(int fd)
 {
-	char	*s1;
-	char	*s2;
+	static char	*s1;
+	static char	*s2;
 	int32_t		buffer;
 	int32_t		byte;
 
@@ -53,12 +53,13 @@ char	*get_next_line(int fd)
 	byte = 0;
 	while (byte = read(fd, s1, buffer) > 0)
 	{
+		printf("test");
+		s2 = ft_strjoin(s2, s1);
 		if (ft_newline(s2))
 		{
 			s2 = ft_strcut(s2);
 			break;
 		}
-		s2 = ft_strjoin(s2, s1);
 	}
 	return (s2);
 }
@@ -69,5 +70,6 @@ int	main(void)
 	char	*s;
 
 	fd = open("./fichier.txt", O_RDONLY);
+	printf("gnl : %s\n", get_next_line(fd));
 	printf("gnl : %s\n", get_next_line(fd));
 }

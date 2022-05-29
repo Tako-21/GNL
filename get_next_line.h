@@ -6,14 +6,14 @@
 /*   By: mmeguedm <mmeguedm@student42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 13:54:07 by mmeguedm          #+#    #+#             */
-/*   Updated: 2022/05/29 19:01:34 by mmeguedm         ###   ########.fr       */
+/*   Updated: 2022/05/29 19:27:46 by mmeguedm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __GET__NEXT__LINE__H
 # define __GET__NEXT__LINE__H
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 11000
+# define BUFFER_SIZE 1
 
 #include <unistd.h>
 #include <sys/types.h>
