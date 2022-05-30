@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmeguedm <mmeguedm@student42.fr>           +#+  +:+       +#+        */
+/*   By: mmeguedm <mmeguedm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 13:54:07 by mmeguedm          #+#    #+#             */
-/*   Updated: 2022/05/29 19:27:46 by mmeguedm         ###   ########.fr       */
+/*   Updated: 2022/05/30 23:02:39 by mmeguedm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@
 #include <stdio.h> // TO REMOVE
 
 char		*get_next_line(int fd);
-static int	ft_newline(char *s);
-char		*ft_strjoin(char const *s1, char const *s2);
+static int	ft_newline(char *s, int fd);
+char		*ft_strjoin(char *s1, char *s2);
 char		*ft_strdup(const char *src);
-int	ft_strlen(char *str);
+int			ft_strlen(char *str);
 char		*ft_strcut(const char *src);
 #endif
 #endif

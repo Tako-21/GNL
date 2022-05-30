@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmeguedm <mmeguedm@student42.fr>           +#+  +:+       +#+        */
+/*   By: mmeguedm <mmeguedm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 13:53:46 by mmeguedm          #+#    #+#             */
-/*   Updated: 2022/05/29 18:57:21 by mmeguedm         ###   ########.fr       */
+/*   Updated: 2022/05/30 23:31:42 by mmeguedm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*p;
 	int		i;
@@ -46,5 +46,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		j++;
 	}
 	p[i] = '\0';
+	free(s1);
 	return (p);
 }
