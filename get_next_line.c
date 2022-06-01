@@ -6,13 +6,13 @@
 /*   By: mmeguedm <mmeguedm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 13:53:15 by mmeguedm          #+#    #+#             */
-/*   Updated: 2022/05/30 23:24:32 by mmeguedm         ###   ########.fr       */
+/*   Updated: 2022/06/01 18:14:50 by mmeguedm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strcut(const char *src)
+char	*ft_strcut(char *src)
 {
 	int		i;
 	char	*p;
@@ -26,6 +26,7 @@ char	*ft_strcut(const char *src)
 		p[i] = src[i];
 		i++;
 	}
+	free(src);
 	p[i] = '\0';
 	return (p);
 }
@@ -53,7 +54,7 @@ static int	ft_newline(char *s, int fd)
 char	*get_next_line(int fd)
 {
 	char			s1[BUFFER_SIZE + 1];
-	static	char	*s2;
+	char	*s2;
 	static	int		count;
 	int32_t			buffer;
 
@@ -68,7 +69,6 @@ char	*get_next_line(int fd)
 		ft_newline(s1, fd);
 		if (ft_newline(s2, fd))
 			return (ft_strcut(s2));
-		// free(s1);
 	}
 	return (s2);
 }

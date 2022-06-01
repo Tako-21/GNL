@@ -6,7 +6,7 @@
 /*   By: mmeguedm <mmeguedm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 13:53:46 by mmeguedm          #+#    #+#             */
-/*   Updated: 2022/05/30 23:31:42 by mmeguedm         ###   ########.fr       */
+/*   Updated: 2022/06/01 17:57:40 by mmeguedm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	char	*p;
 	int		i;
 	int		j;
+	int		count = 0;
 
 	j = 0;
 	i = 0;
@@ -46,6 +47,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		j++;
 	}
 	p[i] = '\0';
-	free(s1);
+	if (*s1)
+		free(s1);
 	return (p);
 }
