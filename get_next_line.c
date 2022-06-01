@@ -6,71 +6,69 @@
 /*   By: mmeguedm <mmeguedm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 13:53:15 by mmeguedm          #+#    #+#             */
-/*   Updated: 2022/06/01 18:14:50 by mmeguedm         ###   ########.fr       */
+/*   Updated: 2022/06/01 23:26:43 by mmeguedm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-char	*ft_strcut(char *src)
-{
-	int		i;
-	char	*p;
-
-	i = 0;
-	p = malloc(sizeof(char) * ft_strlen((char *)src) + 1);
-	if (!p)
-		return (NULL);
-	while (src[i] && src[i] != '\n')
-	{
-		p[i] = src[i];
-		i++;
-	}
-	free(src);
-	p[i] = '\0';
-	return (p);
-}
 
 static int	ft_newline(char *s, int fd)
 {
 	while (*s)
 	{
 		if (*s == '\n')
-		{
-			while (*s == '\n' && *s)
-			{
-				read(fd, s, 1);
-				s++;
-			}
 			return (1);
-		}
 		s++;
 	}
 	return (0);
+}
+
+void	ft_cleanbuf(char *buffer)
+{
+	int32_t	end;
+	int32_t	start;
+
+	start = 0;
+	end = 0;
+	while (buffer[end] != '\n' && buffer[end])
+		end++;
+	end++;
+	while (start < BUFFER_SIZE + 1 && (buffer[end] != '\n') && (buffer[end] != '\0'))
+	{
+			buffer[start] = buffer[start + end];
+			start++;
+	}
 }
 
 #include <string.h>
 
 char	*get_next_line(int fd)
 {
-	char			s1[BUFFER_SIZE + 1];
-	char	*s2;
+	static	char	buffer[BUFFER_SIZE + 1];
+	char			*line;
 	static	int		count;
-	int32_t			buffer;
 
-	printf("\\\\\\\\\\\\\\\\   CALL %d   \\\\\\\\\\\\\\\\\n\n", count++);
-	buffer = BUFFER_SIZE;
-	s1[BUFFER_SIZE] = 0;
-	s2 = "";
-	while (read(fd, s1, buffer) > 0)
+	printf("\\\\\\\\\\\\\\\\   CALL %d   \\\\\\\\\\\\\\\\\n\n", count);
+
+	// buffer = 0;
+	line = (char[BUFFER_SIZE + 1]){0};
+	while (!(strchr(line, '\n'))) // GERER RESTE ELEMENTS BUFF
 	{
-		// s1[buffer] = '\0';
-		s2 = ft_strjoin(s2, s1);
-		ft_newline(s1, fd);
-		if (ft_newline(s2, fd))
-			return (ft_strcut(s2));
+		read(fd, buffer, BUFFER_SIZE);
+		line = ft_strjoin(line, buffer);
+		// if (count > 0)
+			// printf("line : %s\n", line);
+		if (ft_newline(line, fd))
+		{
+			ft_cleanbuf(buffer);
+			printf("buffer : %s\n", buffer);
+			count++;
+			return (ft_strcut(line));
+		}
 	}
-	return (s2);
+	count++;
+	printf("buffer : %s\n", buffer);
+	return (ft_strcut(line));
 }
 
 int	main(void)
@@ -81,14 +79,14 @@ int	main(void)
 	fd = open("fichier.txt", O_RDONLY);
 
 	s = get_next_line(fd);
-	printf("gnl : %s\n\n", s);
+	printf("\nGNL : %s\n\n", s);
 	free(s);
 
 	s = get_next_line(fd);
-	printf("gnl : %s\n\n", s);
+	printf("\nGNL : %s\n\n", s);
 	free(s);
 
 	s = get_next_line(fd);
-	printf("gnl : %s\n\n", s);
+	printf("\nGNL : %s\n\n", s);
 	free(s);
 }
