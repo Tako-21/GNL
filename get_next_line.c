@@ -6,8 +6,8 @@
 /*   By: mmeguedm <mmeguedm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 13:53:15 by mmeguedm          #+#    #+#             */
-/*   Updated: 2022/06/01 23:26:43 by mmeguedm         ###   ########.fr       */
-/*                                                                            */
+/*   Updated: 2022/06/02 23:28:05 by mmeguedm         ###   ########.fr       */
+	/*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
@@ -23,21 +23,24 @@ static int	ft_newline(char *s, int fd)
 	return (0);
 }
 
-void	ft_cleanbuf(char *buffer)
+char	*ft_cleanbuf(char *buffer)
 {
 	int32_t	end;
 	int32_t	start;
 
 	start = 0;
 	end = 0;
+	if (buffer[end] == '\n')
+	{
+		end++;
+		return (&buffer[end]);
+	}
 	while (buffer[end] != '\n' && buffer[end])
 		end++;
 	end++;
-	while (start < BUFFER_SIZE + 1 && (buffer[end] != '\n') && (buffer[end] != '\0'))
-	{
-			buffer[start] = buffer[start + end];
-			start++;
-	}
+	// if (buffer[end] == '\0')
+	// 	return (&buffer[end]);
+	return (&buffer[end]);
 }
 
 #include <string.h>
@@ -52,22 +55,28 @@ char	*get_next_line(int fd)
 
 	// buffer = 0;
 	line = (char[BUFFER_SIZE + 1]){0};
+	if (buffer[0] != '\0')
+	{
+		line = ft_cleanbuf(buffer);
+		ft_memmove(buffer, line, ft_strlen(line) + 1);
+		line = (char[BUFFER_SIZE + 1]){0};
+		line = ft_strjoin(line, buffer);
+		count++;
+		return (ft_strcut(line));
+	}
 	while (!(strchr(line, '\n'))) // GERER RESTE ELEMENTS BUFF
 	{
 		read(fd, buffer, BUFFER_SIZE);
+		buffer[BUFFER_SIZE] = '\0';
 		line = ft_strjoin(line, buffer);
-		// if (count > 0)
-			// printf("line : %s\n", line);
 		if (ft_newline(line, fd))
 		{
 			ft_cleanbuf(buffer);
-			printf("buffer : %s\n", buffer);
 			count++;
 			return (ft_strcut(line));
 		}
 	}
 	count++;
-	printf("buffer : %s\n", buffer);
 	return (ft_strcut(line));
 }
 
@@ -89,4 +98,13 @@ int	main(void)
 	s = get_next_line(fd);
 	printf("\nGNL : %s\n\n", s);
 	free(s);
+
+	s = get_next_line(fd);
+	printf("\nGNL : %s\n\n", s);
+	free(s);
+
+	s = get_next_line(fd);
+	printf("\nGNL : %s\n\n", s);
+	free(s);
+
 }

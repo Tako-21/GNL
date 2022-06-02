@@ -6,7 +6,7 @@
 /*   By: mmeguedm <mmeguedm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 13:53:46 by mmeguedm          #+#    #+#             */
-/*   Updated: 2022/06/01 23:22:59 by mmeguedm         ###   ########.fr       */
+/*   Updated: 2022/06/02 23:35:09 by mmeguedm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	ft_strchr(const char *string, int searchedChar )
 	while (string[i])
 	{
 		if (string[i] == sch)
-			// return ((char *)&string[i]);
 			return (1);
 		i++;
 	}
@@ -41,22 +40,35 @@ int	ft_strchr(const char *string, int searchedChar )
 	return (0);
 }
 
+
 char	*ft_strcut(char *src)
 {
 	int		i;
 	char	*p;
 
 	i = 0;
-	p = malloc(sizeof(char) * ft_strlen((char *)src) + 1);
+	p = malloc(sizeof(char) * ft_strlen((char *)src) + 2);
 	if (!p)
+	{
+		free(src);
 		return (NULL);
+	}
+	if (src[i] == '\n')
+	{
+		p[0] = '\n';
+		p[1] = '\0';
+		free(src);
+		return (p);
+	}
 	while (src[i] && src[i] != '\n')
 	{
 		p[i] = src[i];
 		i++;
 	}
-	free(src);
+	p[i] = src[i];
+	i++;
 	p[i] = '\0';
+	free(src);
 	return (p);
 }
 
@@ -89,14 +101,25 @@ char	*ft_strjoin(char *line, char *buffer)
 	return (p);
 }
 
-void	ft_bzero(void *s, size_t n)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < n)
+	if (!dest && !src)
+		return (NULL);
+	if (((char *) src) < ((char *) dest))
 	{
-		((char *)s)[i] = '\0';
-		i++;
+		while (n--)
+			((char *)dest)[n] = ((char *)src)[n];
 	}
+	else
+	{
+		while (n--)
+		{
+			((char *)dest)[i] = ((char *)src)[i];
+			i++;
+		}
+	}
+	return (dest);
 }

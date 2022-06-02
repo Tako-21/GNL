@@ -6,7 +6,7 @@
 /*   By: mmeguedm <mmeguedm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 13:54:07 by mmeguedm          #+#    #+#             */
-/*   Updated: 2022/06/01 23:09:19 by mmeguedm         ###   ########.fr       */
+/*   Updated: 2022/06/02 20:12:19 by mmeguedm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char		*ft_strdup(const char *src);
 int			ft_strlen(char *str);
 char		*ft_strcut(char *src);
 int			ft_strchr(const char *string, int searchedChar );
-void	ft_bzero(void *s, size_t n);
+void	*ft_memmove(void *dest, const void *src, size_t n);
 
 #endif
 #endif
