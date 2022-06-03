@@ -11,100 +11,120 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <string.h>
 
-static int	ft_newline(char *s, int fd)
+static int	ft_newline(char *s)
 {
-	while (*s)
+	if (s)
 	{
-		if (*s == '\n')
-			return (1);
-		s++;
+		while (*s)
+		{
+			if (*s == '\n')
+				return (1);
+			s++;
+		}
 	}
 	return (0);
 }
 
-char	*ft_cleanbuf(char *buffer)
+char	*ft_backline(char	*line)
 {
-	int32_t	end;
-	int32_t	start;
+	char	*s;
+	int		i;
+	int		j;
 
-	start = 0;
-	end = 0;
-	if (buffer[end] == '\n')
+	j = 0;
+	i = 0;
+	while (line[i] && line[i] != '\n')
+		i++;
+	if (line[i] == '\0')
+		return (line);
+	s = malloc(sizeof(char) * (i + 1));
+	i++;
+	while (line[i + j] && line[i + j] != '\n')
 	{
-		end++;
-		return (&buffer[end]);
+		s[j] = line[i + j];
+		j++;
 	}
-	while (buffer[end] != '\n' && buffer[end])
-		end++;
-	end++;
-	// if (buffer[end] == '\0')
-	// 	return (&buffer[end]);
-	return (&buffer[end]);
+	if (line[i + j] == '\0')
+	{
+		// free(s);
+		return (line);
+	}
+	// free(line);
+	return (s);
 }
 
-#include <string.h>
+char	*ft_afterline(char	*line)
+{
+	char	*s;
+	int		i;
+	int		j;
+
+	printf("line1 : %s", s);
+
+	j = 0;
+	i = 0;
+	while (line[i] && line[i] != '\n')
+		i++;
+	if (line[i] == '\0')
+		return (line);
+	s = malloc(sizeof(char) * (i + 1));
+	i++;
+	while (line[i + j] && line[i + j] != '\n')
+	{
+		s[j] = line[i + j];
+		j++;
+	}
+	if (line[i + j] == '\0')
+	{
+		// free(s);
+		printf("line : %s", s);
+		return (line);
+	}
+	// free(line);
+	return (s);
+}
 
 char	*get_next_line(int fd)
 {
-	static	char	buffer[BUFFER_SIZE + 1];
-	char			*line;
-	static	int		count;
+	char			buffer[BUFFER_SIZE + 1];
+	static char		*line;
+	int				readed;
+	char			*tmp;
 
-	printf("\\\\\\\\\\\\\\\\   CALL %d   \\\\\\\\\\\\\\\\\n\n", count);
-
-	// buffer = 0;
-	line = (char[BUFFER_SIZE + 1]){0};
-	if (buffer[0] != '\0')
+	tmp = NULL;
+	readed = 1;
+	while (readed && !ft_newline(line))
 	{
-		line = ft_cleanbuf(buffer);
-		ft_memmove(buffer, line, ft_strlen(line) + 1);
-		line = (char[BUFFER_SIZE + 1]){0};
+		readed = read(fd, buffer, BUFFER_SIZE);
+		if (readed == -1)
+			return (0);
+		buffer[readed] = 0;
 		line = ft_strjoin(line, buffer);
-		count++;
-		return (ft_strcut(line));
 	}
-	while (!(strchr(line, '\n'))) // GERER RESTE ELEMENTS BUFF
-	{
-		read(fd, buffer, BUFFER_SIZE);
-		buffer[BUFFER_SIZE] = '\0';
-		line = ft_strjoin(line, buffer);
-		if (ft_newline(line, fd))
-		{
-			ft_cleanbuf(buffer);
-			count++;
-			return (ft_strcut(line));
-		}
-	}
-	count++;
-	return (ft_strcut(line));
+	tmp = ft_backline(line);
+	line = ft_afterline(line);
+	return (tmp);
+	// return tout ce quil ya avant ton \n
+	// et suprimer de ta static tout ce quil y avais avant pour ne laisse que le restant
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	int		fd;
 	char	*s;
+	int		count;
 
-	fd = open("fichier.txt", O_RDONLY);
+	count = CALL;
+	if (argc != 2)
+		return (-1);
+	fd = open(argv[1], O_RDONLY);
 
-	s = get_next_line(fd);
-	printf("\nGNL : %s\n\n", s);
-	free(s);
-
-	s = get_next_line(fd);
-	printf("\nGNL : %s\n\n", s);
-	free(s);
-
-	s = get_next_line(fd);
-	printf("\nGNL : %s\n\n", s);
-	free(s);
-
-	s = get_next_line(fd);
-	printf("\nGNL : %s\n\n", s);
-	free(s);
-
-	s = get_next_line(fd);
-	printf("\nGNL : %s\n\n", s);
-	free(s);
-
-}
+	while (count--)
+	{
+		s = get_next_line(fd);
+		printf("GNL : %s", s);
+		// free(s);
+		}
+	}

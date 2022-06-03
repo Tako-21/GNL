@@ -6,7 +6,7 @@
 /*   By: mmeguedm <mmeguedm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 13:53:46 by mmeguedm          #+#    #+#             */
-/*   Updated: 2022/06/02 23:35:09 by mmeguedm         ###   ########.fr       */
+/*   Updated: 2022/06/04 01:08:57 by mmeguedm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,13 @@ int	ft_strlen(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+	if (str)
+	{
+		while (str[i])
+			i++;
+		return (i);
+	}
+	return (0);
 }
 
 int	ft_strchr(const char *string, int searchedChar )
@@ -40,38 +44,6 @@ int	ft_strchr(const char *string, int searchedChar )
 	return (0);
 }
 
-
-char	*ft_strcut(char *src)
-{
-	int		i;
-	char	*p;
-
-	i = 0;
-	p = malloc(sizeof(char) * ft_strlen((char *)src) + 2);
-	if (!p)
-	{
-		free(src);
-		return (NULL);
-	}
-	if (src[i] == '\n')
-	{
-		p[0] = '\n';
-		p[1] = '\0';
-		free(src);
-		return (p);
-	}
-	while (src[i] && src[i] != '\n')
-	{
-		p[i] = src[i];
-		i++;
-	}
-	p[i] = src[i];
-	i++;
-	p[i] = '\0';
-	free(src);
-	return (p);
-}
-
 char	*ft_strjoin(char *line, char *buffer)
 {
 	char	*p;
@@ -84,10 +56,13 @@ char	*ft_strjoin(char *line, char *buffer)
 		+ ft_strlen((char *)buffer)) + 1);
 	if (!p)
 		return (NULL);
-	while (line[i] && line[i] != '\n')
+	if (line != NULL)
 	{
-		p[i] = line[i];
-		i++;
+		while (line[i])
+		{
+			p[i] = line[i];
+			i++;
+		}
 	}
 	while (buffer[j])
 	{
@@ -96,30 +71,7 @@ char	*ft_strjoin(char *line, char *buffer)
 		j++;
 	}
 	p[i] = '\0';
-	if (*line)
+	if (line != NULL)
 		free(line);
 	return (p);
-}
-
-void	*ft_memmove(void *dest, const void *src, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	if (!dest && !src)
-		return (NULL);
-	if (((char *) src) < ((char *) dest))
-	{
-		while (n--)
-			((char *)dest)[n] = ((char *)src)[n];
-	}
-	else
-	{
-		while (n--)
-		{
-			((char *)dest)[i] = ((char *)src)[i];
-			i++;
-		}
-	}
-	return (dest);
 }
