@@ -27,6 +27,27 @@ static int	ft_newline(char *s)
 	return (0);
 }
 
+int	ft_sizemalloc(char	*line)
+{
+	int	i;
+	int	sizemalloc;
+
+	sizemalloc = 0;
+	i = 0;
+	if (line == NULL)
+		return (0);
+	while (line[i] != '\n' && line[i])
+		i++;
+	if (line[i] == '\n')
+		i++;
+	while (line[i])
+	{
+		i++;
+		sizemalloc++;
+	}
+	return (sizemalloc);
+}
+
 char	*ft_backline(char	*line)
 {
 	char	*s;
@@ -35,23 +56,19 @@ char	*ft_backline(char	*line)
 
 	j = 0;
 	i = 0;
-	while (line[i] && line[i] != '\n')
-		i++;
-	if (line[i] == '\0')
-		return (line);
-	s = malloc(sizeof(char) * (i + 1));
-	i++;
-	while (line[i + j] && line[i + j] != '\n')
-	{
-		s[j] = line[i + j];
+	if (line == NULL || line[0] == '\0')
+		return (NULL);
+	while (line[j] && line[j] != '\n')
 		j++;
-	}
-	if (line[i + j] == '\0')
+	s = malloc(sizeof(char) * (j + 2));
+	if (!s)
+		return (NULL);
+	while (i <= j)
 	{
-		// free(s);
-		return (line);
+		s[i] = line[i];
+		i++;
 	}
-	// free(line);
+	s[i] = '\0';
 	return (s);
 }
 
@@ -60,39 +77,49 @@ char	*ft_afterline(char	*line)
 	char	*s;
 	int		i;
 	int		j;
-
-	printf("line1 : %s", s);
+	int		sizemalloc;
 
 	j = 0;
 	i = 0;
-	while (line[i] && line[i] != '\n')
-		i++;
-	if (line[i] == '\0')
-		return (line);
-	s = malloc(sizeof(char) * (i + 1));
-	i++;
-	while (line[i + j] && line[i + j] != '\n')
+	if (line == NULL || line[0] == '\0')
 	{
-		s[j] = line[i + j];
+		free(line);
+		return (NULL);
+	}
+	sizemalloc = ft_sizemalloc(line);
+	while (line[j] != '\n' && line[j])
+		j++;
+	if (line[j] == '\n')
+		j++;
+	s = malloc(sizeof(char) * (sizemalloc + 2));
+	if (!s)
+		return (NULL);
+	while (line[j])
+	{
+		s[i] = line[j];
+		i++;
 		j++;
 	}
-	if (line[i + j] == '\0')
-	{
-		// free(s);
-		printf("line : %s", s);
-		return (line);
-	}
-	// free(line);
+	s[i] = '\0';
+	// if (line[i + j] == '\0')
+	// {
+	// 	printf("line afterline : %c", line[i + j]);
+	// 	// free(s);
+	// 	return (line);
+	// }
+	free(line);
 	return (s);
 }
 
 char	*get_next_line(int fd)
 {
+	char			*tmp;
 	char			buffer[BUFFER_SIZE + 1];
 	static char		*line;
 	int				readed;
-	char			*tmp;
+	static	int		count = 1;
 
+	printf("\n///////////// CALL %d/////////////\n", count++);
 	tmp = NULL;
 	readed = 1;
 	while (readed && !ft_newline(line))
@@ -104,10 +131,9 @@ char	*get_next_line(int fd)
 		line = ft_strjoin(line, buffer);
 	}
 	tmp = ft_backline(line);
+	printf("line : %s\n", line);
 	line = ft_afterline(line);
 	return (tmp);
-	// return tout ce quil ya avant ton \n
-	// et suprimer de ta static tout ce quil y avais avant pour ne laisse que le restant
 }
 
 int	main(int argc, char **argv)
@@ -120,11 +146,12 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (-1);
 	fd = open(argv[1], O_RDONLY);
-
 	while (count--)
 	{
 		s = get_next_line(fd);
 		printf("GNL : %s", s);
-		// free(s);
-		}
+		free(s);
 	}
+	// free(s);
+	close(fd);
+}
