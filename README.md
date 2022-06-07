@@ -8,7 +8,7 @@ Whether it's a file, stdin, or even later a network connection, you'll always ne
 
 `cd Gnl`
 
-`./run.sh` Here you will have to put the number call functions and the buffer size.
+`./run.sh`  Here you will have to put the number call functions and the buffer size.
 
 Enjoy ! You can modify the filetest.txt for your own tests.
 
