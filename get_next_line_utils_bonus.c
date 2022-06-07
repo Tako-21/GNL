@@ -6,11 +6,11 @@
 /*   By: mmeguedm <mmeguedm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 13:53:46 by mmeguedm          #+#    #+#             */
-/*   Updated: 2022/06/06 14:12:11 by mmeguedm         ###   ########.fr       */
+/*   Updated: 2022/06/06 14:15:28 by mmeguedm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	ft_strlen(char *str)
 {

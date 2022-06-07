@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmeguedm <mmeguedm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 13:53:15 by mmeguedm          #+#    #+#             */
-/*   Updated: 2022/06/06 14:36:59 by mmeguedm         ###   ########.fr       */
+/*   Updated: 2022/06/06 14:15:34 by mmeguedm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	ft_newline(char *s)
 {
@@ -102,22 +102,22 @@ char	*get_next_line(int fd)
 {
 	char			*tmp;
 	char			*buffer;
-	static char		*line;
+	static char		*line[1024];
 	int				readed;
 
 	tmp = NULL;
 	readed = 1;
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	while (readed && !ft_newline(line))
+	while (readed && !ft_newline(line[fd]))
 	{
 		readed = read(fd, buffer, BUFFER_SIZE);
 		if (readed == -1)
 			return (free(buffer), NULL);
 		buffer[readed] = 0;
-		line = ft_strjoin(line, buffer);
+		line[fd] = ft_strjoin(line[fd], buffer);
 	}
-	tmp = ft_backline(line);
-	line = ft_afterline(line);
+	tmp = ft_backline(line[fd]);
+	line[fd] = ft_afterline(line[fd]);
 	return (free(buffer), tmp);
 }
 
