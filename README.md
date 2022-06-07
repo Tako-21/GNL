@@ -6,7 +6,7 @@ Whether it's a file, stdin, or even later a network connection, you'll always ne
 ## How to install and run the project
 `git clone https://github.com/Tako-21/GNL.git`
 
-`cd Gnl && ./run.sh`  Here you will have to put the number call functions and the buffer size.
+`cd GNL && ./run.sh`  Here you will have to put the number call functions and the buffer size.
 
 Enjoy ! You can modify the filetest.txt for your own tests.
 
